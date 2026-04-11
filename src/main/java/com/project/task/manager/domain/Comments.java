@@ -1,58 +1,89 @@
 package com.project.task.manager.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.proxy.HibernateProxy;
 
-@Entity (name = "comment")
-@Table (name = "comment_table")
-@Data
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+@Entity
+@Table (name = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode (of = "id")
+@Getter
+@Setter
 public class Comments {
 	@Id
 	@Column(
 			name = "id",
 			updatable = false,
-			unique = true)
+			unique = true,
+            nullable = false
+    )
 	@SequenceGenerator(
-			name = "task_Id_sequence",
-			sequenceName = "task_Id_sequence",
-			allocationSize = 3)
+			name = "comments_id_sequence",
+			sequenceName = "comments_id_sequence",
+			allocationSize = 3
+    )
 	@GeneratedValue(
 			strategy = GenerationType.SEQUENCE,
-			generator = "task_Id_sequence")
+			generator = "comments_id_sequence"
+    )
 	private Long id;
-	
-	
-	@ManyToOne
-	@JoinColumn(name = "commenter_id", referencedColumnName = "id")
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "commenter_id")
 	private User commenter;
 	
 	@ManyToOne
-	@JoinColumns({
-		@JoinColumn (name = "task_id", referencedColumnName = "id"),
-		@JoinColumn (name = "title", referencedColumnName = "title")
-		})
+	@JoinColumn (name = "task_id")
 	private Task task;
 	
-	@Column(name = "text")
+	@Column(name = "text", nullable = false)
 	private String text;
-	
-	
-	
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        Class<?> oEffectiveClass = o instanceof HibernateProxy proxy
+                        ? proxy.getHibernateLazyInitializer().getPersistentClass()
+                        : o.getClass();
+
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy proxy
+                        ? proxy.getHibernateLazyInitializer().getPersistentClass()
+                        : this.getClass();
+
+        if (thisEffectiveClass != oEffectiveClass) return false;
+
+        Comments comments = (Comments) o;
+        return getId() != null && Objects.equals(getId(), comments.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString () {
+        return "Comment{ " +
+                "id= " + id +
+                ", createdAt= " + createdAt +
+                ", updatedAt= " + updatedAt +
+                ", text=" + text +
+                "}";
+    }
 }
