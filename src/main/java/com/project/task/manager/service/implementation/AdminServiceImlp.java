@@ -7,16 +7,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.project.task.manager.constants.ErrorMessage;
-import com.project.task.manager.domain.Task;
-import com.project.task.manager.domain.User;
-import com.project.task.manager.domain.DTO.CommentDTO;
-import com.project.task.manager.domain.DTO.TaskDTO;
-import com.project.task.manager.domain.DTO.TaskWithCommentsDTO;
+import com.project.task.manager.domain.entities.Task;
+import com.project.task.manager.domain.entities.User;
 import com.project.task.manager.domain.status.PRIORITY;
 import com.project.task.manager.domain.status.STATUS;
 import com.project.task.manager.repository.TaskRepository;
-import com.project.task.manager.service.AdminService;
-import com.project.task.manager.service.UserService;
+import com.project.task.manager.service.interfaces.AdminService;
+import com.project.task.manager.service.interfaces.UserService;
 import com.project.task.manager.service.map.TaskMapper;
 
 import jakarta.persistence.EntityNotFoundException;

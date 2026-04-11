@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.task.manager.domain.Comments;
-import com.project.task.manager.domain.DTO.CommentDTO;
-import com.project.task.manager.domain.DTO.TaskDTO;
-import com.project.task.manager.domain.DTO.TaskWithCommentsDTO;
+import com.project.task.manager.domain.entities.Comments;
 import com.project.task.manager.domain.status.STATUS;
 import com.project.task.manager.service.implementation.TaskServiceImpl;
 

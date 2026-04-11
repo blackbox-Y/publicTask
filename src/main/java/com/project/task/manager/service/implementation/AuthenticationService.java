@@ -6,19 +6,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.project.task.manager.domain.DTO.AuthenticationRequest;
-import com.project.task.manager.domain.DTO.AuthenticationResponse;
-import com.project.task.manager.domain.DTO.RegisterRequest;
+import com.project.task.manager.domain.request.AuthenticationRequest;
+import com.project.task.manager.domain.response.AuthenticationResponse;
+import com.project.task.manager.domain.request.RegisterRequest;
 import com.project.task.manager.domain.status.Role;
 import com.project.task.manager.repository.UserRepository;
 import com.project.task.manager.security.JwtService;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 import lombok.RequiredArgsConstructor;
 
-import com.project.task.manager.domain.User;
-import com.project.task.manager.domain.status.Role;
+import com.project.task.manager.domain.entities.User;
 
 @Service
 @RequiredArgsConstructor

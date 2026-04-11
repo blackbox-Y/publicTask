@@ -1,7 +1,5 @@
 package com.project.task.manager.service.map;
 
-import com.project.task.manager.domain.DTO.TaskDTO;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import com.project.task.manager.domain.Task;
+import com.project.task.manager.domain.entities.Task;
 
 public class TaskMapper {
 	

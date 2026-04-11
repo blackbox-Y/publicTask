@@ -3,9 +3,9 @@ package com.project.task.manager.service.implementation;
 import org.springframework.stereotype.Service;
 
 import com.project.task.manager.constants.ErrorMessage;
-import com.project.task.manager.domain.User;
+import com.project.task.manager.domain.entities.User;
 import com.project.task.manager.repository.UserRepository;
-import com.project.task.manager.service.UserService;
+import com.project.task.manager.service.interfaces.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;

@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.project.task.manager.domain.Comments;
-import com.project.task.manager.domain.Task;
+import com.project.task.manager.domain.entities.Comments;
+import com.project.task.manager.domain.entities.Task;
 
 public interface CommentRepository extends JpaRepository <Comments, Long>{
 	

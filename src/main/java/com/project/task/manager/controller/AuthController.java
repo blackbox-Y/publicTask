@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.task.manager.domain.DTO.AuthenticationRequest;
-import com.project.task.manager.domain.DTO.AuthenticationResponse;
-import com.project.task.manager.domain.DTO.RegisterRequest;
+import com.project.task.manager.domain.request.AuthenticationRequest;
+import com.project.task.manager.domain.response.AuthenticationResponse;
+import com.project.task.manager.domain.request.RegisterRequest;
 import com.project.task.manager.service.implementation.AuthenticationService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;

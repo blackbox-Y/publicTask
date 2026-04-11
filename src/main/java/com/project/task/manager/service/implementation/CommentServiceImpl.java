@@ -3,18 +3,13 @@ package com.project.task.manager.service.implementation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import com.project.task.manager.domain.Comments;
-import com.project.task.manager.domain.Task;
-import com.project.task.manager.domain.User;
-import com.project.task.manager.domain.DTO.CommentDTO;
-import com.project.task.manager.domain.DTO.TaskDTO;
+import com.project.task.manager.domain.entities.Comments;
+import com.project.task.manager.domain.entities.Task;
+import com.project.task.manager.domain.entities.User;
 import com.project.task.manager.repository.CommentRepository;
-import com.project.task.manager.repository.TaskRepository;
-import com.project.task.manager.repository.UserRepository;
-import com.project.task.manager.service.CommentService;
+import com.project.task.manager.service.interfaces.CommentService;
 import com.project.task.manager.service.map.CommentMapper;
 
 import lombok.AllArgsConstructor;

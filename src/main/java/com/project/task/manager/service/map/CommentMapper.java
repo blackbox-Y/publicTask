@@ -7,8 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import com.project.task.manager.domain.Comments;
-import com.project.task.manager.domain.DTO.CommentDTO;
+import com.project.task.manager.domain.entities.Comments;
 
 public class CommentMapper {
 	public static CommentDTO toComDTO (Comments comment) {

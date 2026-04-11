@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.task.manager.constants.TaskNotFoundException;
-import com.project.task.manager.domain.Task;
+import com.project.task.manager.domain.entities.Task;
 import com.project.task.manager.repository.TaskRepository;
 
 @Service

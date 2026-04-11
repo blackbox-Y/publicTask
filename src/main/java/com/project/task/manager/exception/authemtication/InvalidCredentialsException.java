@@ -1,7 +1,0 @@
-package com.project.task.manager.exception.authemtication;
-
-public class InvalidCredentialsException extends AuthenticationException {
-    public InvalidCredentialsException ( ) {
-        super(AuthErrorCode.INVALID_CREDENTIALS, "invalid email or password", null);
-    }
-}

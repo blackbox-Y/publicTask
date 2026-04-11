@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.project.task.manager.domain.Task;
-import com.project.task.manager.domain.User;
+import com.project.task.manager.domain.entities.Task;
+import com.project.task.manager.domain.entities.User;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 	
