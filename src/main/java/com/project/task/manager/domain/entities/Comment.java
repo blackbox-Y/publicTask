@@ -16,7 +16,7 @@ import java.util.Objects;
 @Builder
 @Getter
 @Setter
-public class Comments {
+public class Comment {
 	@Id
 	@Column(
 			name = "id",
@@ -46,7 +46,7 @@ public class Comments {
 	@JoinColumn(name = "commenter_id")
 	private User commenter;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn (name = "task_id")
 	private Task task;
 	
@@ -68,7 +68,7 @@ public class Comments {
 
         if (thisEffectiveClass != oEffectiveClass) return false;
 
-        Comments comments = (Comments) o;
+        Comment comments = (Comment) o;
         return getId() != null && Objects.equals(getId(), comments.getId());
     }
 
@@ -76,6 +76,11 @@ public class Comments {
     public final int hashCode() {
         return getClass().hashCode();
     }
+
+
+    public Long getCommenterId() { return commenter != null ? commenter.getId() : null; }
+
+    public Long getTaskId() { return task != null ? task.getId() : null;}
 
     @Override
     public String toString () {

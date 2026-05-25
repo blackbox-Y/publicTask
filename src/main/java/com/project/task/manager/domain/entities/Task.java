@@ -42,9 +42,14 @@ public class Task {
     @JoinColumn(name = "agent_id")
     private User agent;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "task",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     @Builder.Default
-    private List<Comments> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
 
     @Column(name = "title", nullable = false)
@@ -62,7 +67,7 @@ public class Task {
     @Column(name = "step_description")
     @OrderColumn(name = "step_order")
     @Builder.Default
-    private LinkedList<String> steps = new LinkedList<>();
+    private List<String> steps = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "priority")
@@ -72,12 +77,12 @@ public class Task {
     @Column(name = "status")
     private STATUS status;
 
-    public void addComment(Comments comment) {
+    public void addComment(Comment comment) {
         comments.add(comment);
         comment.setTask(this);
     }
 
-    public void removeComment(Comments comment) {
+    public void removeComment(Comment comment) {
         comments.remove(comment);
         comment.setTask(null);
     }
@@ -92,7 +97,7 @@ public class Task {
 
     public List<Long> getCommentIds() {
         return comments.stream()
-                .map(Comments::getId)
+                .map(Comment::getId)
                 .toList();
     }
 

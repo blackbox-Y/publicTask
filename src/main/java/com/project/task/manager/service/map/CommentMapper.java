@@ -1,35 +1,28 @@
 package com.project.task.manager.service.map;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.project.task.manager.domain.entities.Comment;
+import com.project.task.manager.domain.request.CommentRequest;
+import com.project.task.manager.domain.response.CommentResponse;
+import org.mapstruct.*;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
-import com.project.task.manager.domain.entities.Comments;
+@Mapper (componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
+public interface CommentMapper {
+    @Mapping(target = "commenter", ignore = true)
+    @Mapping(target = "task", ignore = true)
+    Comment toEntity(CommentRequest request);
 
-public class CommentMapper {
-	public static CommentDTO toComDTO (Comments comment) {
-		return new CommentDTO().builder()
-				.userEmail(comment.getCommenter().getEmail())
-				.text(comment.getText())
-				.taskTitle(comment.getTask().getTitle())
-				.build();
-	}
-	
-	public static Page <CommentDTO> toComPageDTO (Page <Comments> comPage) {
-		
-	     List<CommentDTO> comDTOs = comPage.getContent()
-	                .stream()
-	                .map(CommentMapper::toComDTO)
-	                .collect(Collectors.toList());
-	        return new PageImpl<>(comDTOs,
-	        		PageRequest.of(
-	                		comPage.getNumber(), 
-	                		comPage.getSize(), 
-	                		comPage.getSort()),
-	                		comPage.getTotalElements()
-	        );
-	}
+    @Mapping(source = "commenter.id", target = "commenterId")
+    @Mapping(source = "task.id", target = "taskId")
+    CommentResponse toResponse(Comment comment);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Comment updateEntityFromRequest (CommentRequest request, @MappingTarget Comment comment);
+
+    default Page <CommentResponse> toResponsePage (Page <Comment> comments) {
+        return comments.map(this::toResponse);
+    }
+
 }
+

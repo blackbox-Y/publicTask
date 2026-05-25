@@ -1,5 +1,7 @@
 package com.project.task.manager.configuration;
 
+import com.project.task.manager.domain.exception.entity.EntityException;
+import com.project.task.manager.domain.status.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.project.task.manager.constants.ErrorMessage;
 import com.project.task.manager.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -24,8 +25,8 @@ public class ApplicationConfiguration {
 	@Bean
 	public UserDetailsService userDetailService () {
 		return username -> 
-		repository.findByEmail(username).orElseThrow(()-> 
-		new EntityNotFoundException(ErrorMessage.USER_NOT_FOUND));
+		repository.findByEmail(username).orElseThrow(()->
+                new EntityNotFoundException(null, null));
 	}
 	
 	@Bean
@@ -43,7 +44,7 @@ public class ApplicationConfiguration {
 	    return config.getAuthenticationManager();
 	  }
 	
-	@Bean 
+	@Bean
 	PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
 	}

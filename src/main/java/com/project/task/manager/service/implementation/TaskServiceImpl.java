@@ -1,101 +1,109 @@
 package com.project.task.manager.service.implementation;
 
+import com.project.task.manager.domain.exception.entity.EntityException;
+import com.project.task.manager.domain.exception.entity.EntityNotFoundException;
+import com.project.task.manager.domain.request.TaskRequest;
+import com.project.task.manager.domain.response.TaskResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import com.project.task.manager.constants.ErrorMessage;
-import com.project.task.manager.domain.entities.Comments;
+import com.project.task.manager.domain.entities.Comment;
 import com.project.task.manager.domain.entities.Task;
 import com.project.task.manager.domain.entities.User;
 import com.project.task.manager.domain.status.STATUS;
 import com.project.task.manager.repository.TaskRepository;
-import com.project.task.manager.service.interfaces.TaskService;
-import com.project.task.manager.service.interfaces.UserService;
 import com.project.task.manager.service.map.TaskMapper;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
-public class TaskServiceImpl implements TaskService{
-	
-	private final CommentServiceImpl commentService;
-	private final UserService userService;
-	
-	private final TaskRepository taskRepo;
-	
-	
-	
-	@Override
+public class TaskServiceImpl {
+
+	private final TaskRepository repo;
+
+    private final UserServiceImpl userService;
+
+    private final TaskMapper mapper;
+
+
+    @PreAuthorize("authentication.principal.id == #authorId")
+    public TaskResponse create(TaskRequest request, Long authorId) {
+        log.info("creating a new Task for User: {}", authorId);
+
+        User author = userService.findById(authorId);
+        Task task = mapper.toEntity(request);
+
+        task.setAuthor(author);
+
+        Task saved = repo.save(task);
+        return mapper.toResponse(saved);
+    }
+
+
+    @PreAuthorize("@taskSecurityService.canAccessTask(#id)")
+    public TaskResponse readTask (Long id) {
+        log.info("reading a task with ID: {}",  id);
+
+        Task task = repo.findById(id).orElseThrow(
+				()-> new EntityNotFoundException(EntityException.EntityType.TASK, id));
+		return mapper.toResponse(task);
+	}
+
 	@PreAuthorize("authentication.principal.id == #id")
-	public TaskDTO findTaskDTO (Long taskId, Long userId) {
-		Task task = taskRepo.findById(taskId).orElseThrow(
-				()-> new EntityNotFoundException(ErrorMessage.TASK_NOT_FOUND));
-		return TaskMapper.toTaskDTO(task);
-	}
-	
-	@Override
-	public Task findTask (Long taskId, Long userId) {
-		return taskRepo.findById(taskId).orElseThrow(
-				()-> new EntityNotFoundException(ErrorMessage.TASK_NOT_FOUND));
-	}
+	public Page<TaskResponse> readTaskPage (Long id, int pageNumber, int pageSize) {
+        log.info("reading a page of tasks. user's ID: {}",  id);
 
-	@Override
-	@PreAuthorize("authentication.principal.id == #authorId")
-	public Page<TaskDTO> findAuthorTasks(Long authorId, int pageNumber, int pageSize) {
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-		User user = userService.findById(authorId);
+        Pageable pageable = PageRequest.of(
+                pageNumber, pageSize,
+                Sort.by("id").descending());
+        User user = userService.findById(id);
 		
-		Page <Task> taskPage = taskRepo.findByAuthor(pageable, user);
-		Page<TaskDTO> dtoTaskPage = TaskMapper.toTaskPageDTO(taskPage);
-		
-		return dtoTaskPage;
+		Page <Task> taskPage = repo.findByAuthor(pageable, user);
+		return mapper.toResponsePage(taskPage);
 	}
 
-	@Override
-	@PreAuthorize("authentication.principal.id == #authorId")
-	public String setStatus(STATUS status, Long taskId, Long authorId) {
-			findTask(taskId, authorId).setStatus(status);
-			return "Status updated: " + status;
+    @Transactional
+    @PreAuthorize("@taskSecurityService.canAccessTask(#id)")
+	public TaskResponse updateStatus(STATUS status, Long id) {
+        log.info("updating task status ID: {}",  id);
+
+        Task existingTask =  repo.findById(id).orElseThrow(
+                ()-> new EntityNotFoundException(EntityException.EntityType.TASK, id));
+        existingTask.setStatus(status);
+
+        Task updated = repo.save(existingTask);
+        return  mapper.toResponse(updated);
 	}
 
-	@Override
-	@PreAuthorize("authentication.principal.id == #authorId")
-	public Comments addComments(CommentDTO comDTO, Long taskId, Long authorId) {	
-			Task task = findTask(taskId, authorId);
-			User user = userService.findById(authorId);
-			
-			return commentService.addComment(comDTO, task, user);
-	}
-	
+    @Transactional
+    @PreAuthorize("@taskSecurityService.canAccessTask(#id)")
+    public TaskResponse update(TaskRequest request, Long id) {
+        log.info("updating task ID: {}",  id);
 
-	@Override
-	@PreAuthorize("authentication.principal.id == #authorId")
-	public TaskWithCommentsDTO taskWithComments(Long taskId, Long authorId, int pageNumber, int pageSize) {
-		TaskDTO task = findTaskDTO(taskId, authorId);
-		Page <CommentDTO> comPage = showTaskComments(taskId, authorId, pageNumber, pageSize);
-		
-		TaskWithCommentsDTO taskCom = new TaskWithCommentsDTO(task, comPage); 
-		
-		return taskCom;
-	}
+        Task task = repo.findById(id).orElseThrow(
+                ()-> new EntityNotFoundException(EntityException.EntityType.TASK, id));
 
-	@Override
-	@PreAuthorize("authentication.principal.id == #authorId")
-	public Page<CommentDTO> showTaskComments(
-			Long taskId, 
-			Long authorId, 
-			int pageNumber, 
-			int pageSize) {
-		Task task = findTask(taskId, authorId);
-		User user = userService.findById(authorId);
-		Page <CommentDTO> commentPage = commentService
-				.showTaskComments(task, user, pageNumber, pageSize);
-		return commentPage;
-	}
+        mapper.updateEntityFromRequest(request, task);
+        Task saved = repo.save(task);
+        return mapper.toResponse(saved);
+    }
 
+    @Transactional
+    @PreAuthorize("@taskSecurityService.canAccessTask(#id)")
+    public void delete(Long id) {
+        log.info("deleting a task with ID: {}", id);
+
+        Task task = repo.findById(id).orElseThrow(
+                ()-> new EntityNotFoundException(EntityException.EntityType.TASK, id));
+
+        repo.delete(task);
+    }
 }

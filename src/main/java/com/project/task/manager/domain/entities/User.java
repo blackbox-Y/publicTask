@@ -50,6 +50,10 @@ public class User implements UserDetails{
 	private String password;
 
     @Builder.Default
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = false;
+
+    @Builder.Default
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false)
 	private Role role = Role.USER;
@@ -88,7 +92,7 @@ public class User implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-    	return true;
+        return enabled;
     }
 
     @Override
@@ -115,6 +119,7 @@ public class User implements UserDetails{
         return getClass().hashCode();
     }
 
+    public String getFullName() {return name + " " + surname;}
     @Override
     public String toString () {
         return "User{" +
