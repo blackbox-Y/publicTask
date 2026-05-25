@@ -7,22 +7,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.project.task.manager.domain.Task;
-import com.project.task.manager.domain.User;
+import com.project.task.manager.domain.entities.Task;
+import com.project.task.manager.domain.entities.User;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-	
-	Page <Task> findAll (Pageable pageable);
-	
-	Page <Task> findByAuthor (Pageable pageable, User Author);
+
+    Page <Task> findByAuthor (Pageable pageable, User Author);
 	
 	Page <Task> findByAgent (Pageable pageable, User Agent);
-	
-	ArrayList<Task> findByAuthor (User Author);
-	
+
 	Optional <Task> findByTitle (String title);
 	
-	Task findByAuthorAndTitle(User author, String taskTitle);
-	
-	void deleteById (Long id);
+	Optional <Task> findByAuthorAndTitle(User author, String taskTitle);
+
+    void deleteById (Long id);
+
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Task t WHERE t.id = :id AND t.author.id = :authorId")
+    boolean existsByIdAndAuthorId(@Param("id") Long id, @Param("authorId") Long authorId);
 }
