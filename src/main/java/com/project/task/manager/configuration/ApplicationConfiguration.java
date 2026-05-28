@@ -1,7 +1,6 @@
 package com.project.task.manager.configuration;
 
-import com.project.task.manager.domain.exception.entity.EntityException;
-import com.project.task.manager.domain.status.Role;
+import com.project.task.manager.domain.exception.client.EntityException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

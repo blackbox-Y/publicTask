@@ -1,6 +1,4 @@
-package com.project.task.manager.domain.exception.entity;
-
-import com.project.task.manager.domain.exception.application.ClientException;
+package com.project.task.manager.domain.exception.client;
 
 public class BadRequestException extends ClientException {
 

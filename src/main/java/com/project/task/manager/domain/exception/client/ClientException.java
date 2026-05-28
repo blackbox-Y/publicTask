@@ -1,4 +1,6 @@
-package com.project.task.manager.domain.exception.application;
+package com.project.task.manager.domain.exception.client;
+
+import com.project.task.manager.domain.exception.application.ApplicationException;
 
 //4xx exception
 public abstract class ClientException extends ApplicationException {

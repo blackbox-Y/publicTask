@@ -1,6 +1,5 @@
-package com.project.task.manager.domain.exception.entity;
+package com.project.task.manager.domain.exception.client;
 
-import com.project.task.manager.domain.exception.application.ClientException;
 import lombok.Getter;
 
 @Getter

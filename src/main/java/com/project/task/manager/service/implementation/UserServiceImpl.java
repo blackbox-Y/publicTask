@@ -1,7 +1,7 @@
 package com.project.task.manager.service.implementation;
 
-import com.project.task.manager.domain.exception.entity.EntityException;
-import com.project.task.manager.domain.exception.entity.EntityNotFoundException;
+import com.project.task.manager.domain.exception.client.EntityException;
+import com.project.task.manager.domain.exception.client.EntityNotFoundException;
 import com.project.task.manager.domain.exception.user.UserAlreadyExistsException;
 import com.project.task.manager.domain.request.UserRequest;
 import com.project.task.manager.domain.response.UserResponse;
@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.project.task.manager.domain.exception.*;
 import com.project.task.manager.domain.entities.User;
 import com.project.task.manager.repository.UserRepository;
 import lombok.AllArgsConstructor;

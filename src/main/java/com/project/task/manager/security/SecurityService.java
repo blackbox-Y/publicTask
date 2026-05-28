@@ -1,20 +1,13 @@
 package com.project.task.manager.security;
 
-import com.project.task.manager.domain.entities.Comment;
-import com.project.task.manager.domain.exception.entity.EntityException;
-import com.project.task.manager.domain.exception.entity.EntityNotFoundException;
+import com.project.task.manager.domain.exception.client.EntityException;
+import com.project.task.manager.domain.exception.client.EntityNotFoundException;
 import com.project.task.manager.repository.CommentRepository;
 import com.project.task.manager.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import com.project.task.manager.domain.exception.TaskNotFoundException;
-import com.project.task.manager.domain.entities.Task;
 import com.project.task.manager.repository.TaskRepository;
-
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor

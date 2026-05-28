@@ -1,7 +1,7 @@
 package com.project.task.manager.service.implementation;
 
-import com.project.task.manager.domain.exception.entity.EntityException;
-import com.project.task.manager.domain.exception.entity.EntityNotFoundException;
+import com.project.task.manager.domain.exception.client.EntityException;
+import com.project.task.manager.domain.exception.client.EntityNotFoundException;
 import com.project.task.manager.domain.request.CommentRequest;
 import com.project.task.manager.domain.response.CommentResponse;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,6 @@ import com.project.task.manager.domain.entities.Task;
 import com.project.task.manager.domain.entities.User;
 import com.project.task.manager.repository.CommentRepository;
 import com.project.task.manager.repository.TaskRepository;
-import com.project.task.manager.service.implementation.UserServiceImpl;
 import com.project.task.manager.service.map.CommentMapper;
 
 @Slf4j
