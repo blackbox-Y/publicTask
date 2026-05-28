@@ -1,7 +1,7 @@
 package com.project.task.manager.service.implementation;
 
-import com.project.task.manager.domain.exception.entity.EntityException;
-import com.project.task.manager.domain.exception.entity.EntityNotFoundException;
+import com.project.task.manager.domain.exception.client.EntityException;
+import com.project.task.manager.domain.exception.client.EntityNotFoundException;
 import com.project.task.manager.domain.request.TaskRequest;
 import com.project.task.manager.domain.response.TaskResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import com.project.task.manager.domain.entities.Comment;
 import com.project.task.manager.domain.entities.Task;
 import com.project.task.manager.domain.entities.User;
 import com.project.task.manager.domain.status.STATUS;

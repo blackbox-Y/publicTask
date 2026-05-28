@@ -2,8 +2,8 @@ package com.project.task.manager;
 
 import com.project.task.manager.domain.entities.Task;
 import com.project.task.manager.domain.entities.User;
-import com.project.task.manager.domain.exception.entity.EntityException;
-import com.project.task.manager.domain.exception.entity.EntityNotFoundException;
+import com.project.task.manager.domain.exception.client.EntityException;
+import com.project.task.manager.domain.exception.client.EntityNotFoundException;
 import com.project.task.manager.domain.request.TaskRequest;
 import com.project.task.manager.domain.response.TaskResponse;
 import com.project.task.manager.domain.status.PRIORITY;
@@ -113,14 +113,12 @@ class TaskServiceImplTest {
         @WithMockUser
         @DisplayName("Should create task successfully")
         void create_Success() {
-            // Given
             Long authorId = 1L;
             when(userService.findById(authorId)).thenReturn(testUser);
             when(taskMapper.toEntity(taskRequest)).thenReturn(testTask);
             when(taskRepository.save(any(Task.class))).thenReturn(testTask);
             when(taskMapper.toResponse(testTask)).thenReturn(taskResponse);
 
-            // When
             TaskResponse result = taskService.create(taskRequest, authorId);
 
             // Then
@@ -156,7 +154,6 @@ class TaskServiceImplTest {
         @WithMockUser
         @DisplayName("Should handle null authorId")
         void create_NullAuthorId_ThrowsException() {
-            // Given
             Long authorId = null;
             when(userService.findById(authorId)).thenThrow(new IllegalArgumentException());
 
